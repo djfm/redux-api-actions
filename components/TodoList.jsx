@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 
 import TodoItem from './TodoItem';
-import { toggleTodoAction } from '../actions';
+import { toggleTodoRemoteAction } from '../actions';
 
 const allChecked = items => items.filter(item => !item.checked).length === 0;
 
@@ -24,7 +24,7 @@ todoList.propTypes = {
 
 const mapStateToProps = items => ({ items });
 const mapDispatchToProps = {
-  toggle: toggleTodoAction,
+  toggle: toggleTodoRemoteAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(todoList);

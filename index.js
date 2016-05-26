@@ -1,9 +1,12 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 
 import TodoList from './components/TodoList';
+
+import { makeClientMiddleware } from './clientMiddleware';
+import { makeClient } from './client';
 
 const initialTodos = [
   { text: 'Observe user behaviour', checked: false },
@@ -23,6 +26,12 @@ const todoReducer = (state = initialTodos, action) => {
   return state;
 };
 
-const store = createStore(todoReducer);
+const store = createStore(
+  todoReducer,
+  undefined,
+  applyMiddleware(
+    makeClientMiddleware(makeClient)
+  )
+);
 
 render(<Provider store={store}><TodoList /></Provider>, document.getElementById('mount'));
