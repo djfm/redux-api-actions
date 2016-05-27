@@ -56,35 +56,17 @@
 	
 	var _redux = __webpack_require__(175);
 	
+	var _reducer = __webpack_require__(195);
+	
+	var _reducer2 = _interopRequireDefault(_reducer);
+	
 	var _TodoList = __webpack_require__(190);
 	
 	var _TodoList2 = _interopRequireDefault(_TodoList);
 	
-	var _clientMiddleware = __webpack_require__(193);
-	
-	var _client = __webpack_require__(194);
-	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var initialTodos = [{ text: 'Observe user behaviour', checked: false }, { text: 'Find interesting problem to solve', checked: false }, { text: 'Come up with great solution', checked: false }, { text: 'Ship it', checked: false }];
-	
-	var todoReducer = function todoReducer() {
-	  var state = arguments.length <= 0 || arguments[0] === undefined ? initialTodos : arguments[0];
-	  var action = arguments[1];
-	
-	  if (action.type === 'TOGGLE_TODO') {
-	    return state.map(function (item) {
-	      return {
-	        text: item.text,
-	        checked: item.text === action.text ? !item.checked : item.checked
-	      };
-	    });
-	  }
-	
-	  return state;
-	};
-	
-	var store = (0, _redux.createStore)(todoReducer, undefined, (0, _redux.applyMiddleware)((0, _clientMiddleware.makeClientMiddleware)(_client.makeClient)));
+	var store = (0, _redux.createStore)(_reducer2.default);
 	
 	(0, _reactDom.render)(_react2.default.createElement(
 	  _reactRedux.Provider,
@@ -21965,7 +21947,7 @@
 	  return { items: items };
 	};
 	var mapDispatchToProps = {
-	  toggle: _actions.toggleTodoRemoteAction
+	  toggle: _actions.toggleTodoAction
 	};
 	
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(todoList);
@@ -21992,10 +21974,14 @@
 	  var checked = _ref.checked;
 	  var toggleTodo = _ref.toggleTodo;
 	  return _react2.default.createElement(
-	    "label",
+	    "div",
 	    null,
-	    _react2.default.createElement("input", { type: "checkbox", checked: checked, onChange: toggleTodo }),
-	    text
+	    _react2.default.createElement(
+	      "label",
+	      null,
+	      _react2.default.createElement("input", { type: "checkbox", checked: checked, onChange: toggleTodo }),
+	      text
+	    )
 	  );
 	};
 	
@@ -22022,72 +22008,37 @@
 	    text: text
 	  };
 	};
-	
-	var toggleTodoRemoteAction = exports.toggleTodoRemoteAction = function toggleTodoRemoteAction(text) {
-	  return {
-	    withClient: function withClient(client) {
-	      return function (dispatch) {
-	        return client.authorizeToggleTodo(text).then(function (yesOrNo) {
-	          if (yesOrNo) {
-	            dispatch(toggleTodoAction(text));
-	          } else {
-	            dispatch();
-	          }
-	        });
-	      };
-	    }
-	  };
-	};
 
 /***/ },
-/* 193 */
+/* 193 */,
+/* 194 */,
+/* 195 */
 /***/ function(module, exports) {
 
-	"use strict";
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var makeClientMiddleware = exports.makeClientMiddleware = function makeClientMiddleware(makeClient) {
-	  return function (store) {
-	    return function (next) {
-	      return function (action) {
-	        if (action.withClient) {
-	          makeClient(store.getState().something).then(function (client) {
-	            return action.withClient(client)(store.dispatch);
-	          });
-	        } else {
-	          next(action);
-	        }
+	var initialTodos = [{ text: 'Observe user behaviour', checked: false }, { text: 'Find interesting problem to solve', checked: false }, { text: 'Come up with great solution', checked: false }, { text: 'Ship it', checked: false }];
+	
+	var todoReducer = exports.todoReducer = function todoReducer() {
+	  var state = arguments.length <= 0 || arguments[0] === undefined ? initialTodos : arguments[0];
+	  var action = arguments[1];
+	
+	  if (action.type === 'TOGGLE_TODO') {
+	    return state.map(function (item) {
+	      return {
+	        text: item.text,
+	        checked: item.text === action.text ? !item.checked : item.checked
 	      };
-	    };
-	  };
+	    });
+	  }
+	
+	  return state;
 	};
 	
-	exports.default = makeClientMiddleware;
-
-/***/ },
-/* 194 */
-/***/ function(module, exports) {
-
-	"use strict";
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var makeClient = exports.makeClient = function makeClient() {
-	  return Promise.resolve({
-	    authorizeToggleTodo: function authorizeToggleTodo(text) {
-	      return new Promise(function (resolve) {
-	        return setTimeout(function () {
-	          return resolve(text.length > 0);
-	        }, 500);
-	      });
-	    }
-	  });
-	};
-	
-	exports.default = makeClient;
+	exports.default = todoReducer;
 
 /***/ }
 /******/ ]);

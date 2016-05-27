@@ -1,10 +1,12 @@
 import React, { PropTypes } from 'react';
 
 export const todoItem = ({ text, checked, toggleTodo }) =>
-  <label>
-    <input type="checkbox" checked={checked} onChange={toggleTodo} />
-    {text}
-  </label>
+  <div>
+    <label>
+      <input type="checkbox" checked={checked} onChange={toggleTodo} />
+      {text}
+    </label>
+  </div>
 ;
 
 todoItem.propTypes = {
