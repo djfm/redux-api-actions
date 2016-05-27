@@ -1,10 +1,11 @@
 import React, { PropTypes } from 'react';
+import { Link } from 'react-router';
 
 export const todoItem = ({ text, checked, toggleTodo }) =>
   <div>
     <label>
       <input type="checkbox" checked={checked} onChange={toggleTodo} />
-      {text}
+      {text} <Link to={`/${text}`}>edit</Link>
     </label>
   </div>
 ;
