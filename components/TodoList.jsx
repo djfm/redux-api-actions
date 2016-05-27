@@ -22,7 +22,7 @@ todoList.propTypes = {
   toggle: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = items => ({ items });
+const mapStateToProps = ({ items }) => ({ items });
 const mapDispatchToProps = {
   toggle: toggleTodoAction,
 };

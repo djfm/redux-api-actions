@@ -13,4 +13,8 @@ module.exports = {
     extensions: ['', '.js', '.jsx'],
   },
   devtool: 'source-map',
+  devServer: {
+    contentBase: './dist',
+    inline: true,
+  },
 };

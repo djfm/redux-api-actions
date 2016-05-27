@@ -1,11 +1,26 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import { createStore, combineReducers } from 'redux';
 import reducer from './reducer';
+import { browserHistory, Router, Route } from 'react-router';
+import { syncHistoryWithStore, routerReducer } from 'react-router-redux';
 
 import TodoList from './components/TodoList';
 
-const store = createStore(reducer);
+const store = createStore(combineReducers({
+  items: reducer,
+  routing: routerReducer,
+}), undefined, window.devToolsExtension && window.devToolsExtension());
 
-render(<Provider store={store}><TodoList /></Provider>, document.getElementById('mount'));
+const history = syncHistoryWithStore(browserHistory, store);
+
+const App = () =>
+  <Provider store={store}>
+    <Router history={history}>
+      <Route path="/" component={TodoList} />
+    </Router>
+  </Provider>
+;
+
+render(<App />, document.getElementById('mount'));
